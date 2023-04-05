@@ -1,9 +1,9 @@
 PRAGMA foreign_keys = ON;
-DROP TABLE questions;
-DROP TABLE users;
 DROP TABLE question_follows;
 DROP TABLE replies;
 DROP TABLE question_likes;
+DROP TABLE questions;
+DROP TABLE users;
 
 
 CREATE TABLE questions (
@@ -23,6 +23,7 @@ CREATE TABLE users (
 CREATE TABLE question_follows (
     user_id INTEGER ,
     question_id INTEGER ,
+    id INTEGER PRIMARY KEY, 
     
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
@@ -43,6 +44,7 @@ CREATE TABLE replies (
 CREATE TABLE question_likes (
     user_id INTEGER,
     question_id INTEGER,
+    id INTEGER PRIMARY KEY,
 
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
