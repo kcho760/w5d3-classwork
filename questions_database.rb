@@ -50,6 +50,19 @@ class Questions
         return nil unless question != nil
         Questions.new(question.first)
     end
+
+    def author(user_id)
+        question = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+        SELECT
+            fname, lname
+        FROM
+            users
+        WHERE
+            user_id = ?
+    SQL
+    return nil unless question != nil
+    Questions.new(question.first)
+    end
 end
 
 class User
@@ -86,11 +99,21 @@ class User
         data.map {|datum| User.new(datum)}
     end
 
+    def authored_replies(user_id)
+        Replies.find_by_user_id(user_id)
+    end
+
+    def authored_question(user_id)
+        Questions.find_by_author_id(user_id)
+    end
+
     def initialize(options)
         @fname = options['fname']
         @lname = options['lname']
         @id = options['id']
     end
+end
+
 
     class QuestionFollows
 
@@ -155,6 +178,20 @@ class User
         Replies.new(question.first)
 
         end
+
+        def self.find_by_question_id(question_id)
+            question = QuestionsDatabase.instance.execute(<<-SQL, question_id)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                question_id = ?
+        SQL
+        return nil unless question != nil
+        Replies.new(question.first)
+
+        end
     end
 
     class QuestionLikes
@@ -179,5 +216,3 @@ class User
             QuestionLikes.new(question.first) 
         end
     end
-
-end
