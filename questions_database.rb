@@ -37,6 +37,19 @@ class Questions
         return nil unless question != nil
         Questions.new(question.first) 
     end
+
+    def self.find_by_author_id(user_id)
+        question = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+            SELECT
+                *
+            FROM
+                questions
+            WHERE
+                user_id = ?
+        SQL
+        return nil unless question != nil
+        Questions.new(question.first)
+    end
 end
 
 class User
@@ -55,18 +68,18 @@ class User
         User.new(user.first)
     end
 
-    # def self.find_by_name(fname,lname)
-    #     user = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
-    #         SELECT
-    #             *
-    #         FROM
-    #             users
-    #         WHERE
-    #             fname = fname AND lname = lname
-    #     SQL
-    #     return nil unless fname == fname && lname == lname
-    #     User.new(user.first)
-    # end
+    def self.find_by_name(fname,lname)
+        user = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                fname = ? AND lname = ?
+        SQL
+        return nil unless fname == fname && lname == lname
+        User.new(user.first)
+    end
 
     def self.all
         data = QuestionsDatabase.instance.execute("SELECT * FROM users")
@@ -78,4 +91,93 @@ class User
         @lname = options['lname']
         @id = options['id']
     end
+
+    class QuestionFollows
+
+        attr_accessor :user_id, :question_id, :id
+
+        def initialize(options)
+            @user_id = options["user_id"]
+            @question_id = options["question_id"]
+            @id = options["id"]
+        end
+
+        def self.find_by_id(id)
+            question = QuestionsDatabase.instance.execute(<<-SQL, id)
+                SELECT
+                    *
+                FROM
+                    question_follows
+                WHERE
+                    id = ?
+            SQL
+            return nil unless question != nil
+            QuestionFollows.new(question.first) 
+        end
+
+    end
+
+    class Replies
+
+        attr_accessor :id, :question_id, :user_id, :reply_body, :reply_id
+
+        def initialize(options)
+            @id = options['id']
+            @question_id = options['question_id']
+            @user_id = options['user_id']
+            @reply_body = options['reply_body']
+            @reply_id = options['reply_id']
+        end
+
+        def self.find_by_id(id)
+            question = QuestionsDatabase.instance.execute(<<-SQL, id)
+                SELECT
+                    *
+                FROM
+                    replies
+                WHERE
+                    id = ?
+            SQL
+            return nil unless question != nil
+            Replies.new(question.first) 
+        end
+
+        def self.find_by_user_id(user_id)
+            question = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                user_id = ?
+        SQL
+        return nil unless question != nil
+        Replies.new(question.first)
+
+        end
+    end
+
+    class QuestionLikes
+        attr_accessor :user_id, :question_id, :id
+
+        def initialize(options)
+            @user_id = options['user_id']
+            @question_id = options['question_id']
+            @id = options['id']
+        end
+
+        def self.find_by_id(id)
+            question = QuestionsDatabase.instance.execute(<<-SQL, id)
+                SELECT
+                    *
+                FROM
+                    question_likes
+                WHERE
+                    id = ?
+            SQL
+            return nil unless question != nil
+            QuestionLikes.new(question.first) 
+        end
+    end
+
 end
