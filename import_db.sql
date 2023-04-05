@@ -1,9 +1,9 @@
 
 CREATE TABLE questions
-    questions_id INTEGER PRIMARY KEY
+    id SERIAL PRIMARY KEY
     title TEXT NOT NULL,
     body TEXT NOT NULL,
-    author_id INTEGER,
+    author_id SERIAL,
     
     FOREIGN KEY (author_id) REFERENCES users(id)
 
@@ -11,7 +11,21 @@ CREATE TABLE questions
 CREATE TABLE users
     fname TEXT NOT NULL,
     lname TEXT NOT NULL,
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
 
 CREATE TABLE question_follows
-    
+    user_id INTEGER 
+    FOREIGN KEY (user_id) REFERENCES questions(id)
+    questions_id INTEGER 
+    FOREIGN KEY (questions_id) REFERENCES users(id)
+
+CREATE TABLE replies
+    id SERIAL PRIMARY KEY 
+    question_id INTEGER 
+    FOREIGN KEY (question_id) REFERENCES questions(id)
+    reply_id INTEGER REFERENCES replies(id)
+    user_id INTEGER 
+    FOREIGN KEY (user_id) REFERENCES users(id)
+
+
+
