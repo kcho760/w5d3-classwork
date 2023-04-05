@@ -99,3 +99,44 @@ INSERT INTO
 VALUES 
     ( "Why am I at App Academy5", "Cause I''m broke", 4);
 
+INSERT INTO 
+    question_follows (user_id, question_id)
+VALUES 
+    (1,3);
+
+INSERT INTO 
+    question_follows (user_id, question_id)
+VALUES 
+    (4,2);
+
+INSERT INTO 
+    question_follows (user_id, question_id)
+VALUES 
+    (5,3);
+
+INSERT INTO 
+    question_follows (user_id, question_id)
+VALUES 
+    (2,1);
+
+INSERT INTO 
+    question_follows (user_id, question_id)
+VALUES 
+    (4,4);
+
+INSERT INTO 
+    replies(question_id, user_id, reply_body, reply_id)
+VALUES 
+    (2,1,"This is a test",NULL);
+
+INSERT INTO 
+    replies(question_id, user_id, reply_body, reply_id)
+VALUES 
+    (2,4,"This is a reply to a reply",1);
+
+INSERT INTO 
+    replies(question_id, user_id, reply_body, reply_id)
+VALUES 
+    (1,2,"This is a test2", NULL);
+
+
